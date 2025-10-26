@@ -1,0 +1,281 @@
+
+
+
+
+COSE (CBOR Object Signing and Encryption)                   Q. Dang, Ed.
+Internet-Draft                                                      NIST
+Intended status: Standards Track                       Y. Name Here, Ed.
+Expires: 29 April 2026                                               org
+                                                         C. Bormann, Ed.
+                                                  Universität Bremen TZI
+                                                         26 October 2025
+
+
+        COSE Algorithms for KangarooTwelve, TurboSHAKE and KMAC
+               draft-bormann-cose-turbo-kanga-kmac-latest
+
+Abstract
+
+   This document specifies or updates registrations for a number of
+   Keccak-based algorithms in the COSE Algorithms Registry.
+
+   RFC 9861 defined and registered four eXtendable-Output Functions
+   (XOFs), hash functions with output of arbitrary length, named
+   TurboSHAKE128, TurboSHAKE256, KT128, and KT256; the present document
+   is intended as the IETF consensus document that is now needed to give
+   these algorithms Recommended status in the COSE registry.
+
+   RFC 9861 only hints at MACs that could make use of the TurboSHAKE and
+   KT algorithms.  This document completes the specification of
+   HopMAC128 and HopMAC256 from RFC 9861 and also specifies simpler MACs
+   directly based on KT128 and KT256.  Finally, this document registers
+   COSE Algorithm identifiers for the KMAC set of algorithms
+   (NIST.SP.800-185).
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://cabo.github.io/turbo-kanga/draft-bormann-cose-turbo-kanga-
+   latest.html.  Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-bormann-cose-turbo-kanga-
+   kmac/.
+
+   Discussion of this document takes place on the CBOR Object Signing
+   and Encryption (COSE) Working Group mailing list
+   (mailto:cose@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/cose/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/cose/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/cabo/turbo-kanga.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 29 April 2026.
+
+Copyright Notice
+
+   Copyright (c) 2025 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  Conventions and Terminology
+   2.  Status Recommended for TurboSHAKE128, TurboSHAKE256, KT128, and
+           KT256
+   3.  MAC Algorithms Based on TurboSHAKE128, TurboSHAKE256, KT128,
+           and KT256
+   4.  SHA-3 based Algorithms (KMAC etc.)
+   5.  IANA Considerations
+     5.1.  Updates to the COSE Algorithms Registry
+     5.2.  Additions to Existing Registries
+   6.  Security Considerations
+   7.  Normative References
+   Appendix A.  Examples
+   Acknowledgments
+   Authors' Addresses
+
+1.  Introduction
+
+   (Please see abstract.)
+
+1.1.  Conventions and Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+2.  Status Recommended for TurboSHAKE128, TurboSHAKE256, KT128, and
+    KT256
+
+   (Add text with rationale.)
+
+   Section 5.1 describes the updates needed in the COSE Algorithms
+   registry.
+
+3.  MAC Algorithms Based on TurboSHAKE128, TurboSHAKE256, KT128, and
+    KT256
+
+   (Add specifications for the HopMACs and for a simple KT based MAC.)
+
+4.  SHA-3 based Algorithms (KMAC etc.)
+
+   [NIST.SP.800-185]
+
+
+   // What algorithms do we want to register?  Maybe directly include
+   // cSHAKE?
+
+5.  IANA Considerations
+
+
+   // RFC Ed.: throughout this section, please replace RFC-XXXX with the
+   // RFC number of this specification and remove this note.
+
+5.1.  Updates to the COSE Algorithms Registry
+
+   IANA is requested to update [has updated] the registrations in the
+   COSE Algorithms registry in [IANA.cose] shown in Table 1 by setting
+   the Recommended status column to Yes, and by adding the present
+   document to the Reference column.
+
+   In Table 1, the following columns all have the same content and have
+   been elided:
+
+   *  Capabilities: [kty]
+
+   *  Change Controller: IETF
+
+   *  Reference: [RFC9861], RFC-XXXX
+
+   *  Recommended: Yes
+
+   +===============+=======+===================+
+   | Name          | Value | Description       |
+   +===============+=======+===================+
+   | KT256         | -264  | KT256 XOF         |
+   +---------------+-------+-------------------+
+   | KT128         | -263  | KT128 XOF         |
+   +---------------+-------+-------------------+
+   | TurboSHAKE256 | -262  | TurboSHAKE256 XOF |
+   +---------------+-------+-------------------+
+   | TurboSHAKE128 | -261  | TurboSHAKE128 XOF |
+   +---------------+-------+-------------------+
+
+     Table 1: Registrations in COSE Algorithms
+            Updated to Recommended: Yes
+
+5.2.  Additions to Existing Registries
+
+   IANA is requested to update [has updated] the registrations in the
+   COSE Algorithms registry in [IANA.cose] shown in Table 1 by setting
+   the Recommended status column to Yes.
+
+   In Table 2, the following columns all have the same content and have
+   been elided:
+
+   *  Capabilities: [kty]
+
+   *  Change Controller: IETF
+
+   +================+=====+=============+==================+===========+
+   |Name            |Value|Description  |Reference         |Recommended|
+   +================+=====+=============+==================+===========+
+   |HopMAC256       |-nnn |HopMAC based |[RFC9861], RFC-   |Yes        |
+   |                |     |on KT256 XOF |XXXX              |           |
+   +----------------+-----+-------------+------------------+-----------+
+   |HopMAC128       |-nnn |HopMAC based |[RFC9861], RFC-   |Yes        |
+   |                |     |on KT128 XOF |XXXX              |           |
+   +----------------+-----+-------------+------------------+-----------+
+   |xxxTurboSHAKE256|-nnn |TurboSHAKE256|[RFC9861], RFC-   |Yes        |
+   |                |     |XOF          |XXXX              |           |
+   +----------------+-----+-------------+------------------+-----------+
+   |xxxTurboSHAKE128|-nnn |TurboSHAKE128|[RFC9861], RFC-   |Yes        |
+   |                |     |XOF          |XXXX              |           |
+   +----------------+-----+-------------+------------------+-----------+
+   |cSHAKE128       |-nnn |cSHAKE128    |[NIST.SP.800-185],|Yes        |
+   |                |     |             |RFC-XXXX          |           |
+   +----------------+-----+-------------+------------------+-----------+
+   |cSHAKE256       |-nnn |cSHAKE256    |[NIST.SP.800-185],|Yes        |
+   |                |     |             |RFC-XXXX          |           |
+   +----------------+-----+-------------+------------------+-----------+
+   |KMAC128         |-nnn |KMAC128      |[NIST.SP.800-185],|Yes        |
+   |                |     |             |RFC-XXXX          |           |
+   +----------------+-----+-------------+------------------+-----------+
+   |KMAC256         |-nnn |KMAC256      |[NIST.SP.800-185],|Yes        |
+   |                |     |             |RFC-XXXX          |           |
+   +----------------+-----+-------------+------------------+-----------+
+   |KMACXOF128      |-nnn |KMACXOF128   |[NIST.SP.800-185],|Yes        |
+   |                |     |             |RFC-XXXX          |           |
+   +----------------+-----+-------------+------------------+-----------+
+   |KMACXOF256      |-nnn |KMACXOF256   |[NIST.SP.800-185],|Yes        |
+   |                |     |             |RFC-XXXX          |           |
+   +----------------+-----+-------------+------------------+-----------+
+
+              Table 2: Registrations Added to COSE Algorithms
+
+6.  Security Considerations
+
+7.  Normative References
+
+   [IANA.cose]
+              IANA, "CBOR Object Signing and Encryption (COSE)",
+              <https://www.iana.org/assignments/cose>.
+
+   [NIST.SP.800-185]
+              Kelsey, J., Change, S., Perlner, R., and NIST, "SHA-3
+              derived functions: cSHAKE, KMAC, TupleHash and
+              ParallelHash", NIST Special Publications
+              (General) 800-185, DOI 10.6028/NIST.SP.800-185, December
+              2016,
+              <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
+              NIST.SP.800-185.pdf>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC9861]  Viguier, B., Wong, D., Ed., Van Assche, G., Ed., Dang, Q.,
+              Ed., and J. Daemen, Ed., "KangarooTwelve and TurboSHAKE",
+              RFC 9861, DOI 10.17487/RFC9861, October 2025,
+              <https://www.rfc-editor.org/rfc/rfc9861>.
+
+Appendix A.  Examples
+
+   TBD
+
+Acknowledgments
+
+   TBD
+
+Authors' Addresses
+
+   Quynh Dang (editor)
+   National Institute of Standards and Technology
+   Email: quynh.dang@nist.gov
+
+
+   Your Name Here (editor)
+   org
+   Email: Your@example.com
+
+
+   Carsten Bormann (editor)
+   Universität Bremen TZI
+   Postfach 330440
+   D-28359 Bremen
+   Germany
+   Phone: +49-421-218-63921
+   Email: cabo@tzi.org

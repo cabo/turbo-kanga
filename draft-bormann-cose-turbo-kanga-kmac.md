@@ -10,15 +10,15 @@ date:
 consensus: true
 v: 3
 area: "Security"
-workgroup: "COSE (CBOR Object Signing and Encryption)"
+workgroup: "CBOR Object Signing and Encryption"
 keyword:
 venue:
-  group: "CBOR Object Signing and Encryption (COSE)"
+  group: "CBOR Object Signing and Encryption"
   type: "Working Group"
   mail: "cose@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/cose/"
   github: "cabo/turbo-kanga"
-  latest: "https://cabo.github.io/turbo-kanga/draft-bormann-cose-turbo-kanga-latest.html"
+  latest: "https://cabo.github.io/turbo-kanga/draft-bormann-cose-turbo-kanga-kmac.html"
 
 author:
  -

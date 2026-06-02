@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-05-31T02:37:50.310973+00:00",
+  "timestamp": "2026-06-02T02:44:59.595206+00:00",
   "repo": "cabo/turbo-kanga",
   "labels": [
     {
@@ -50,5 +50,32 @@
     }
   ],
   "issues": [],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOQJkosM7heHqE",
+      "title": "Updated the draft today",
+      "url": "https://github.com/cabo/turbo-kanga/pull/1",
+      "state": "OPEN",
+      "author": "QuynhDangNIST",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-06-01T17:58:58Z",
+      "updatedAt": "2026-06-01T17:58:58Z",
+      "baseRepository": "cabo/turbo-kanga",
+      "baseRefName": "main",
+      "baseRefOid": "526a23bd260fc4706c032f8cbeec1d41b4f2d73c",
+      "headRepository": "QuynhDangNIST/turbo-kanga",
+      "headRefName": "main",
+      "headRefOid": "9457fe7a8f9178b4096f26a217b495e38a8064b5",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
 }

@@ -92,7 +92,9 @@ In addition, this document also specifies concrete instances of KMAC128 and KMAC
 
 # MAC Algorithms Based on TurboSHAKE128, TurboSHAKE256, KT128, and KT256 for COSE
 
-(Add specifications for the HopMACs and for a simple KT based MAC.)
+This section provides concrete specifications for MACs derived from
+TurboSHAKE128 and TurboSHAKE256, as well as for simple MACs based on
+KT128 and KT256.
 
 ## TurboSHAKE128-MAC
 As specified in {{RFC9861, Section 2}}, TurboSHAKE128 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter D.

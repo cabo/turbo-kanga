@@ -8,37 +8,32 @@
 <meta content="Quynh Dang" name="author">
 <meta content="Your Name Here" name="author">
 <meta content="Carsten Bormann" name="author">
-<meta content="
-       This document specifies or updates registrations for a number of
-Keccak-based algorithms in the COSE Algorithms Registry. 
+<meta content='
        RFC 9861 defined and registered four eXtendable-Output Functions
 (XOFs), hash functions with output of arbitrary length, named
 TurboSHAKE128, TurboSHAKE256, KT128, and KT256; the present document
 is intended as the IETF consensus document that is now needed to give
 these algorithms Recommended status in the COSE registry. 
-       RFC 9861 only hints at MACs that could make use of the TurboSHAKE and
-KT algorithms.
-This document completes the specification of HopMAC128 and HopMAC256
-from RFC 9861 and also specifies simpler MACs directly based on KT128
-and KT256.
-Finally, this document registers COSE Algorithm identifiers for the
-KMAC set of algorithms (NIST.SP.800-185). 
-    " name="description">
-<meta content="xml2rfc 3.31.0" name="generator">
+       This document specifies concrete instances of those four functions above to be used as MACs in COSE. 
+       This document also specifies concrete instances of KMAC128 and KMAC256 in   to be used as MACs in COSE and registers code points for them. 
+       And, this document provides "Recommended" status for those algorithms for COSE. 
+    ' name="description">
+<meta content="xml2rfc 3.34.0" name="generator">
 <meta content="draft-bormann-cose-turbo-kanga-kmac-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.31.0
-    Python 3.12.12
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
-    intervaltree 3.1.0
+    intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 5.3.1
-    platformdirs 4.5.0
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.10.0
     pycountry 24.6.1
-    PyYAML 6.0.2
-    requests 2.32.5
-    wcwidth 0.2.14
+    PyYAML 6.0.3
+    requests 2.33.1
+    wcwidth 0.8.2
 -->
 <link href="draft-bormann-cose-turbo-kanga-kmac.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -179,7 +174,7 @@ KMAC set of algorithms (NIST.SP.800-185).
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: 'Oxygen Mono';
@@ -187,7 +182,8 @@ KMAC set of algorithms (NIST.SP.800-185).
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 }
 
 @font-face {
@@ -304,16 +300,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size-adjust: 0.5;
   color: var(--title-color);
 }
-h1#title {
-  font-size: 32px;
-  line-height: 40px;
-  clear: both;
-}
-h1#title, h1#rfcnum {
-  margin: 1.5em 0 0.2em;
-}
-h1#rfcnum + h1#title {
-  margin: 0.2em 0;
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
 }
 
 h1, h2, h3 {
@@ -333,10 +332,10 @@ h4, h5, h6 {
 #abstract+p {
   font-size: 18px;
   line-height: 24px;
-}
-#abstract+p code, #abstract+p samp, #abstract+p tt {
-  font-size: 16px;
-  line-height: 0;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
 }
 
 p {
@@ -347,59 +346,59 @@ p {
 div {
   margin: 0;
 }
-.alignRight.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignRight.art-text pre {
-  padding: 0;
-  width: auto;
-}
 .alignRight {
   margin: 1em 0;
-}
-.alignRight > *:first-child {
-  border: none;
-  margin: 0;
-  float: right;
-  clear: both;
-}
-.alignRight > *:nth-child(2) {
-  clear: both;
-  display: block;
-  border: none;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
 }
 svg {
   display: block;
-}
-/* font-family isn't space-separated, but =~ will have to do */
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
-.alignCenter.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignCenter.art-text pre {
-  padding: 0;
-  width: auto;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
 }
 .alignCenter {
   margin: 1em 0;
-}
-.alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
-  display: table;
-  margin: 0 auto;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
 }
 
 /* lists */
@@ -437,26 +436,25 @@ dl {
     --indent: 5ch;
     & > dt {
       min-width: calc(var(--indent) - 2ch);
+      float: none;
     }
-  }
-  &.olPercent > dt {
-    float: none;
   }
 
   dl > dd > & {
     margin-top: 0.5em;
     margin-bottom: 0;
   }
-}
-dl:not(.dlNewline) > dt {
-  float: left;
-  margin-right: 2ch;
-  min-width: 8ch;
-}
-dl > dd {
-  margin-bottom: .8em;
-  margin-left: var(--indent) !important; /* stupid element overrides */
-  min-height: 2ex;
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
 }
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
@@ -472,20 +470,22 @@ dl > dd {
 }
 
 /* links */
-a, a[href].selfRef:hover {
+a {
   text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
 }
-a[href] {
-  color: var(--link-color);
-}
-a[href].selfRef, .iref + a[href].internal {
+.iref + a[href].internal {
   color: var(--text-color);
-}
-a[href]:hover {
-  text-decoration: underline;
-}
-a[href].selfRef:hover {
-  background-color: var(--highlight-color);
 }
 a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
   white-space: nowrap;
@@ -521,9 +521,9 @@ img {
 figure {
   margin: 0.5em 0;
   padding: 0;
-}
-figure blockquote {
-  margin: 0.8em 0.4em 0.4em;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
 }
 figcaption, caption {
   font-style: italic;
@@ -533,17 +533,19 @@ figcaption, caption {
 }
 @media screen {
   /* Auto-collapse boilerplate. */
-  :is(#status-of-memo, #copyright) p {
-    margin: -2px 0;
-    max-height: 0;
-    transition: max-height 2s ease, margin 0.5s ease 0.5s;
-    overflow: hidden;
-  }
-  :is(#status-of-memo, #copyright):hover p,
-  :is(#status-of-memo, #copyright) h2:target ~ p {
-    margin: 0.5em 0;
-    max-height: 500px;
-    overflow: auto;
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
   pre, svg {
     display: inline-block;
@@ -579,6 +581,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -592,25 +595,17 @@ table {
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
-}
-table.right {
-  margin-left: auto;
-}
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-table.left {
-  margin-right: auto;
-}
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
 }
 
 thead, tbody {
@@ -630,13 +625,6 @@ th {
 :is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
   background-color: var(--highlight-color);
 }
-table caption {
-  margin: 0;
-  padding: 3px 0 3px 1em;
-}
-table p {
-  margin: 0;
-}
 
 /* pilcrow */
 a.pilcrow {
@@ -647,18 +635,16 @@ a.pilcrow {
     color: var(--pilcrow-weak);
     &:hover { text-decoration: none; }
   }
-}
-@media not print {
-  :hover > a.pilcrow {
-    opacity: 1;
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
   }
-  a.pilcrow[href]:hover {
-    color: var(--pilcrow-strong);
-    background-color: transparent;
-  }
-}
-@media print {
-  a.pilcrow {
+  @media print {
     display: none;
   }
 }
@@ -717,9 +703,9 @@ sub, sup {
   font-size: 0.9em;
   font-style: italic;
   margin-top: 2em;
-}
-.docInfo .prepared {
-  float: right;
+  & .prepared {
+    float: right;
+  }
 }
 
 /* table of contents */
@@ -809,23 +795,27 @@ hr.addr {
   max-width: calc(100% - 16px);
 }
 @media (min-width: 500px) {
-  #authors-addresses > section {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  #authors-addresses > section > h2 {
-    column-span: all;
-  }
-  /* hack for break-inside: avoid-column */
-  #authors-addresses address {
-    display: inline-block;
-    break-inside: avoid-column;
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
   }
 }
 
 /* Comments */
-.rfcEditorRemove p:first-of-type {
-  font-style: italic;
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -836,19 +826,21 @@ hr.addr {
 }
 
 @media screen {
-  #toc nav {
-    font-family: var(--font-title);
-    font-weight: 360;
-    & > ul { margin-bottom: 2em; }
-    & ul {
-      margin: 0 0 0 4px;
-      & :is(p, li) {
-        margin: 2px 0;
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
       }
     }
-  }
-  #toc a.toplink {
-    float: right;
+    & a.toplink {
+      float: right;
+    }
   }
 }
 @media not screen {
@@ -869,54 +861,54 @@ hr.addr {
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 2px 0 2px 6px;
-    padding-right: 1em;
-    font-size: 18px;
-    line-height: 24px;
-    min-width: 190px;
-    text-align: right;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
-    &::before { /* css hamburger */
-      float: right;
-      position: relative;
-      width: 1em;
-      height: 1px;
-      left: -164px;
-      margin: 8px 0 0 0;
-      background: white none repeat scroll 0 0;
-      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-      content: "";
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
     }
-  }
-  #toc nav {
-    display: none;
-    background-color: var(--background-color);
-    padding: 0.5em 1em 1em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    height: calc(100vh - 48px);
-    border-left: 1px solid #ddd;
-  }
-  #toc.active {
-    opacity: 1;
-    & nav { display: block; }
-  }
-  /* Make the collapsed ToC header render white on gray also when it's a link */
-  #toc h2 a,
-  #toc h2 a:is(:link, :focus, :hover),
-  #toc a.toplink,
-  #toc a.toplink:hover {
-    color: white;
-    background-color: #444;
-    text-decoration: none;
-  }
-  #toc a.toplink {
-    margin: 2px 0.5em 0;
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
   }
 }
 
@@ -935,26 +927,26 @@ hr.addr {
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 0.25em 1em 1em 0;
-  }
-  #toc nav {
-    display: block;
-    height: calc(90vh - 84px);
-    bottom: 0;
-    padding: 0.5em 0 2em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
   }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
-  }
-  #toc a.toplink {
-    margin: 8px 0.5em 0;
   }
 }
 
@@ -970,12 +962,13 @@ hr.addr {
   #n-copyright-notice {
     border-bottom: none;
   }
-  #toc, #n-introduction {
-    page-break-before: always;
-  }
   #toc {
+    page-break-before: always;
     border-top: none;
     padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
   }
   figure, pre, .vcard {
     page-break-inside: avoid;
@@ -1037,17 +1030,19 @@ hr.addr {
 }
 
 /* SVG Trick: a prefix match works because only black and white are allowed */
-svg :is([stroke="black"], [stroke^="#000"]) {
-  stroke: var(--text-color);
-}
-svg :is([stroke="white"], [stroke^="#fff"]) {
-  stroke: var(--background-color);
-}
-svg :is([fill="black"], [fill^="#000"], :not([fill])) {
-  fill: var(--text-color);
-}
-svg :is([fill="white"], [fill^="#fff"]) {
-  fill: var(--background-color);
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
 }
 </style>
 
@@ -1057,11 +1052,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">COSE: KangarooTwelve, TurboSHAKE, KMAC</td>
-<td class="right">October 2025</td>
+<td class="right">July 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Dang, et al.</td>
-<td class="center">Expires 29 April 2026</td>
+<td class="center">Expires 7 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1069,17 +1064,17 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <div id="internal-metadata" class="document-information">
 <dl id="identifiers">
 <dt class="label-workgroup">Workgroup:</dt>
-<dd class="workgroup">COSE (CBOR Object Signing and Encryption)</dd>
+<dd class="workgroup">CBOR Object Signing and Encryption</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
 <dd class="internet-draft">draft-bormann-cose-turbo-kanga-kmac-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-26" class="published">26 October 2025</time>
+<time datetime="2026-07-06" class="published">6 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-29">29 April 2026</time></dd>
+<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1103,20 +1098,14 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">COSE Algorithms for KangarooTwelve, TurboSHAKE and KMAC</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document specifies or updates registrations for a number of
-Keccak-based algorithms in the COSE Algorithms Registry.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">RFC 9861 defined and registered four eXtendable-Output Functions
+<p id="section-abstract-1">RFC 9861 defined and registered four eXtendable-Output Functions
 (XOFs), hash functions with output of arbitrary length, named
 TurboSHAKE128, TurboSHAKE256, KT128, and KT256; the present document
 is intended as the IETF consensus document that is now needed to give
-these algorithms Recommended status in the COSE registry.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
-<p id="section-abstract-3">RFC 9861 only hints at MACs that could make use of the TurboSHAKE and
-KT algorithms.
-This document completes the specification of HopMAC128 and HopMAC256
-from RFC 9861 and also specifies simpler MACs directly based on KT128
-and KT256.
-Finally, this document registers COSE Algorithm identifiers for the
-KMAC set of algorithms (NIST.SP.800-185).<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+these algorithms Recommended status in the COSE registry.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">This document specifies concrete instances of those four functions above to be used as MACs in COSE.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">This document also specifies concrete instances of KMAC128 and KMAC256 in <span>[<a href="#NIST.SP.800-185" class="cite xref">NIST.SP.800-185</a>]</span> to be used as MACs in COSE and registers code points for them.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+<p id="section-abstract-4">And, this document provides "Recommended" status for those algorithms for COSE.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1124,11 +1113,11 @@ KMAC set of algorithms (NIST.SP.800-185).<a href="#section-abstract-3" class="pi
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">
-        The latest revision of this draft can be found at <span><a href="https://cabo.github.io/turbo-kanga/draft-bormann-cose-turbo-kanga-latest.html">https://cabo.github.io/turbo-kanga/draft-bormann-cose-turbo-kanga-latest.html</a></span>.
+        The latest revision of this draft can be found at <span><a href="https://cabo.github.io/turbo-kanga/draft-bormann-cose-turbo-kanga-kmac.html">https://cabo.github.io/turbo-kanga/draft-bormann-cose-turbo-kanga-kmac.html</a></span>.
         Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-bormann-cose-turbo-kanga-kmac/">https://datatracker.ietf.org/doc/draft-bormann-cose-turbo-kanga-kmac/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">
         Discussion of this document takes place on the
-        CBOR Object Signing and Encryption (COSE) Working Group mailing list (<span><a href="mailto:cose@ietf.org">mailto:cose@ietf.org</a></span>),
+        CBOR Object Signing and Encryption Working Group mailing list (<span><a href="mailto:cose@ietf.org">mailto:cose@ietf.org</a></span>),
         which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/cose/">https://mailarchive.ietf.org/arch/browse/cose/</a></span>.
         Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/cose/">https://www.ietf.org/mailman/listinfo/cose/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
 <p id="section-note.1-4">Source for this draft and an issue tracker can be found at
@@ -1153,7 +1142,7 @@ KMAC set of algorithms (NIST.SP.800-185).<a href="#section-abstract-3" class="pi
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1162,7 +1151,7 @@ KMAC set of algorithms (NIST.SP.800-185).<a href="#section-abstract-3" class="pi
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2025 IETF Trust and the persons identified as the
+            Copyright (c) 2026 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1191,39 +1180,50 @@ KMAC set of algorithms (NIST.SP.800-185).<a href="#section-abstract-3" class="pi
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-status-recommended-for-turb" class="internal xref">Status Recommended for TurboSHAKE128, TurboSHAKE256, KT128, and KT256</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-mac-algorithms-based-on-tur" class="internal xref">MAC Algorithms Based on TurboSHAKE128, TurboSHAKE256, KT128, and KT256</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-sha-3-based-algorithms-kmac" class="internal xref">SHA-3 based Algorithms (KMAC etc.)</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-mac-algorithms-based-on-tur" class="internal xref">MAC Algorithms Based on TurboSHAKE128, TurboSHAKE256, KT128, and KT256 for COSE</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-updates-to-the-cose-algorit" class="internal xref">Updates to the COSE Algorithms Registry</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-turboshake128-mac" class="internal xref">TurboSHAKE128-MAC</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-additions-to-existing-regis" class="internal xref">Additions to Existing Registries</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-turboshake256-mac" class="internal xref">TurboSHAKE256-MAC</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-kt128-mac" class="internal xref">KT128-MAC</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-kt256-mac" class="internal xref">KT256-MAC</a></p>
 </li>
             </ul>
 </li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-kmac128-and-kmac256-for-cos" class="internal xref">KMAC128 and KMAC256 for COSE</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-updates-to-the-cose-algorit" class="internal xref">Updates to the COSE Algorithms Registry</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-additions-to-existing-regis" class="internal xref">Additions to Existing Registries</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1234,7 +1234,8 @@ KMAC set of algorithms (NIST.SP.800-185).<a href="#section-abstract-3" class="pi
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">(Please see abstract.)<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">TurboSHAKE128, TurboSHAKE256, KT128, and KT256 specified in <span>[<a href="#RFC9861" class="cite xref">RFC9861</a>]</span> have great performance improvement over Keccak-based functions specified in FIPS 202 and SP 800-185. This document specifies concrete instances of those four functions for being used as MACs in COSE and moves their status to "Recommended".<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">In addition, this document also specifies concrete instances of KMAC128 and KMAC256 specified in SP 800-185 for being used as MACs in COSE and registers code points for them.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <div id="conventions-and-terminology">
 <section id="section-1.1">
         <h3 id="name-conventions-and-terminology">
@@ -1248,71 +1249,110 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
 </div>
 </section>
 </div>
-<div id="status-recommended-for-turboshake128-turboshake256-kt128-and-kt256">
+<div id="mac-algorithms-based-on-turboshake128-turboshake256-kt128-and-kt256-for-cose">
 <section id="section-2">
-      <h2 id="name-status-recommended-for-turb">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-status-recommended-for-turb" class="section-name selfRef">Status Recommended for TurboSHAKE128, TurboSHAKE256, KT128, and KT256</a>
-      </h2>
-<p id="section-2-1">(Add text with rationale.)<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2"><a href="#sec-regupdate" class="auto internal xref">Section 5.1</a> describes the updates needed in the COSE Algorithms registry.<a href="#section-2-2" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="mac-algorithms-based-on-turboshake128-turboshake256-kt128-and-kt256">
-<section id="section-3">
       <h2 id="name-mac-algorithms-based-on-tur">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-mac-algorithms-based-on-tur" class="section-name selfRef">MAC Algorithms Based on TurboSHAKE128, TurboSHAKE256, KT128, and KT256</a>
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-mac-algorithms-based-on-tur" class="section-name selfRef">MAC Algorithms Based on TurboSHAKE128, TurboSHAKE256, KT128, and KT256 for COSE</a>
       </h2>
-<p id="section-3-1">(Add specifications for the HopMACs and for a simple KT based MAC.)<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">This section provides concrete specifications for MACs derived from
+TurboSHAKE128 and TurboSHAKE256, as well as for simple MACs based on
+KT128 and KT256.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<div id="turboshake128-mac">
+<section id="section-2.1">
+        <h3 id="name-turboshake128-mac">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-turboshake128-mac" class="section-name selfRef">TurboSHAKE128-MAC</a>
+        </h3>
+<p id="section-2.1-1">As specified in <span><a href="https://rfc-editor.org/rfc/rfc9861#section-2" class="relref">Section 2</a> of [<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, TurboSHAKE128 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter D.
+TurboSHAKE128-MAC is a MAC using TurboSHAKE128 where M is the concatenation of the original input message, called M', and a 128-bit secret key, called K, denoted as M'|| K.
+<span class="cref" id="question">Question for the group:</span> Does the group want to have a D value? If the answer is yes, what would it be?
+<span class="cref" id="question_1">Question for the group:</span> L being 16 bytes (128 bits) is fine?<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sha-3-based-algorithms-kmac-etc">
-<section id="section-4">
-      <h2 id="name-sha-3-based-algorithms-kmac">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-sha-3-based-algorithms-kmac" class="section-name selfRef">SHA-3 based Algorithms (KMAC etc.)</a>
+<div id="turboshake256-mac">
+<section id="section-2.2">
+        <h3 id="name-turboshake256-mac">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-turboshake256-mac" class="section-name selfRef">TurboSHAKE256-MAC</a>
+        </h3>
+<p id="section-2.2-1">As specified in <span><a href="https://rfc-editor.org/rfc/rfc9861#section-2" class="relref">Section 2</a> of [<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, TurboSHAKE256 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter D.
+TurboSHAKE256-MAC is a MAC using TurboSHAKE256 where M is the concatenation of the original input message, called M', and a 256-bit secret key, called K, denoted as M'|| K.
+<span class="cref" id="question_2">Question for the group:</span> Does the group want to have a D value? If the answer is yes, what would it be?
+<span class="cref" id="question_3">Question for the group:</span> L being 32 bytes (256 bits) is fine?<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="kt128-mac">
+<section id="section-2.3">
+        <h3 id="name-kt128-mac">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-kt128-mac" class="section-name selfRef">KT128-MAC</a>
+        </h3>
+<p id="section-2.3-1">As specified in <span><a href="https://rfc-editor.org/rfc/rfc9861#section-3" class="relref">Section 3</a> of [<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, KT128 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter C.
+KT128-MAC is a MAC using KT128 where M is the concatenation of the original input message, called M', and a 128-bit secret key, called K, denoted as M'|| K.
+<span class="cref" id="question_4">Question for the group:</span> Does the group want to have a C value? If the answer is yes, what would it be?
+<span class="cref" id="question_5">Question for the group:</span> L being 16 bytes (128 bits) is fine?<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.3-2">KT128 was designed to utilize parallelism in SIMD processors.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="kt256-mac">
+<section id="section-2.4">
+        <h3 id="name-kt256-mac">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-kt256-mac" class="section-name selfRef">KT256-MAC</a>
+        </h3>
+<p id="section-2.4-1">As specified in <span><a href="https://rfc-editor.org/rfc/rfc9861#section-3" class="relref">Section 3</a> of [<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, KT256 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter C.
+KT256-MAC is a MAC using KT256 where M is the concatenation of the original input message, called M', and a 256-bit secret key, called K, denoted as M'|| K.
+<span class="cref" id="question_6">Question for the group:</span> Does the group want to have a C value? If the answer is yes, what would it be?
+<span class="cref" id="question_7">Question for the group:</span> L being 32 bytes (256 bits) is fine?<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.4-2">KT128 was designed to utilize parallelism in SIMD processors.<a href="#section-2.4-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="kmac128-and-kmac256-for-cose">
+<section id="section-3">
+      <h2 id="name-kmac128-and-kmac256-for-cos">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-kmac128-and-kmac256-for-cos" class="section-name selfRef">KMAC128 and KMAC256 for COSE</a>
       </h2>
-<p id="section-4-1"><span>[<a href="#NIST.SP.800-185" class="cite xref">NIST.SP.800-185</a>]</span><a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2"><span class="cref" id="kmac">What algorithms do we want to register?
-Maybe directly include cSHAKE?</span><a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-3-1"><span>[<a href="#NIST.SP.800-185" class="cite xref">NIST.SP.800-185</a>]</span> specifies two MAC algorithms: KMAC128 and KMAC256 which have 3 required input parameters and an optional customization string input, called S.
+The key, K, shall be 128 and 256 bits for KMAC128 and KMAC256 respectively.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2"><span class="cref" id="question_8">Question for the group:</span> Does the group want to have S to be an empty string? Or, is there a specific string the group would like to use?<a href="#section-3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-5">
+<section id="section-4">
       <h2 id="name-iana-considerations">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-5-1"><span class="cref" id="replace-xxxx">RFC Ed.: throughout this section, please replace
+<p id="section-4-1"><span class="cref" id="replace-xxxx">RFC Ed.: throughout this section, please replace
 RFC-XXXX with the RFC number of this specification and remove this
-note.</span><a href="#section-5-1" class="pilcrow">¶</a></p>
+note.</span><a href="#section-4-1" class="pilcrow">¶</a></p>
 <div id="sec-regupdate">
-<section id="section-5.1">
+<section id="section-4.1">
         <h3 id="name-updates-to-the-cose-algorit">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-updates-to-the-cose-algorit" class="section-name selfRef">Updates to the COSE Algorithms Registry</a>
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-updates-to-the-cose-algorit" class="section-name selfRef">Updates to the COSE Algorithms Registry</a>
         </h3>
-<p id="section-5.1-1">IANA is requested to update [has updated] the registrations in the
+<p id="section-4.1-1">IANA is requested to update [has updated] the registrations in the
 COSE Algorithms registry in <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span> shown in <a href="#tab-upgrade" class="auto internal xref">Table 1</a> by
 setting the Recommended status column to Yes, and by adding the present
-document to the Reference column.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">In <a href="#tab-upgrade" class="auto internal xref">Table 1</a>, the following columns all have the same content and
-have been elided:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+document to the Reference column.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">In <a href="#tab-upgrade" class="auto internal xref">Table 1</a>, the following columns all have the same content and
+have been elided:<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.1-3.1">
-            <p id="section-5.1-3.1.1">Capabilities: <code>[kty]</code><a href="#section-5.1-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1-3.1">
+            <p id="section-4.1-3.1.1">Capabilities: <code>[kty]</code><a href="#section-4.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.1-3.2">
-            <p id="section-5.1-3.2.1">Change Controller: IETF<a href="#section-5.1-3.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-3.2">
+            <p id="section-4.1-3.2.1">Change Controller: IETF<a href="#section-4.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.1-3.3">
-            <p id="section-5.1-3.3.1">Reference: <span>[<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, RFC-XXXX<a href="#section-5.1-3.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-3.3">
+            <p id="section-4.1-3.3.1">Reference: <span>[<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, RFC-XXXX<a href="#section-4.1-3.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.1-3.4">
-            <p id="section-5.1-3.4.1">Recommended: Yes<a href="#section-5.1-3.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-3.4">
+            <p id="section-4.1-3.4.1">Recommended: Yes<a href="#section-4.1-3.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <span id="name-registrations-in-cose-algor"></span><div id="tab-upgrade">
 <table class="left" id="table-1">
           <caption>
 <a href="#table-1" class="selfRef">Table 1</a>:
-<a href="#name-registrations-in-cose-algor" class="selfRef">Registrations in COSE Algorithms Updated to Recommended: Yes</a>
+<a href="#name-registrations-in-cose-algor" class="selfRef">Registrations in COSE Algorithms Registry Updated to Recommended: Yes</a>
           </caption>
 <thead>
             <tr>
@@ -1348,28 +1388,31 @@ have been elided:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-regadd">
-<section id="section-5.2">
+<section id="section-4.2">
         <h3 id="name-additions-to-existing-regis">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-additions-to-existing-regis" class="section-name selfRef">Additions to Existing Registries</a>
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-additions-to-existing-regis" class="section-name selfRef">Additions to Existing Registries</a>
         </h3>
-<p id="section-5.2-1">IANA is requested to update [has updated] the registrations in the
-COSE Algorithms registry in <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span> shown in <a href="#tab-upgrade" class="auto internal xref">Table 1</a> by
-setting the Recommended status column to Yes.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">In <a href="#tab-add" class="auto internal xref">Table 2</a>, the following columns all have the same content and
-have been elided:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">IANA is requested to add [has added] the registrations in the
+COSE Algorithms registry in <span>[<a href="#IANA.cose" class="cite xref">IANA.cose</a>]</span> shown in <a href="#tab-add" class="auto internal xref">Table 2</a>.
+<span class="cref" id="rfced">RFC Editor:</span> Actual values are TBD by IANA and need to be updated after registration.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">In <a href="#tab-add" class="auto internal xref">Table 2</a>, the following columns all have the same content and
+have been elided:<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.2-3.1">
-            <p id="section-5.2-3.1.1">Capabilities: <code>[kty]</code><a href="#section-5.2-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.2-3.1">
+            <p id="section-4.2-3.1.1">Capabilities: <code>[kty]</code><a href="#section-4.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-5.2-3.2">
-            <p id="section-5.2-3.2.1">Change Controller: IETF<a href="#section-5.2-3.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.2-3.2">
+            <p id="section-4.2-3.2.1">Change Controller: IETF<a href="#section-4.2-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.2-3.3">
+            <p id="section-4.2-3.3.1">Recommended: Yes<a href="#section-4.2-3.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <span id="name-registrations-added-to-cose"></span><div id="tab-add">
 <table class="left" id="table-2">
           <caption>
 <a href="#table-2" class="selfRef">Table 2</a>:
-<a href="#name-registrations-added-to-cose" class="selfRef">Registrations Added to COSE Algorithms</a>
+<a href="#name-registrations-added-to-cose" class="selfRef">Registrations Added to COSE Algorithms Registry</a>
           </caption>
 <thead>
             <tr>
@@ -1377,89 +1420,50 @@ have been elided:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
               <th class="text-left" rowspan="1" colspan="1">Value</th>
               <th class="text-left" rowspan="1" colspan="1">Description</th>
               <th class="text-left" rowspan="1" colspan="1">Reference</th>
-              <th class="text-left" rowspan="1" colspan="1">Recommended</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">HopMAC256</td>
-              <td class="text-left" rowspan="1" colspan="1">-nnn</td>
-              <td class="text-left" rowspan="1" colspan="1">HopMAC based on KT256 XOF</td>
+              <td class="text-left" rowspan="1" colspan="1">TurboSHAKE256-MAC</td>
+              <td class="text-left" rowspan="1" colspan="1">-tbd</td>
+              <td class="text-left" rowspan="1" colspan="1">TurboSHAKE256 MAC</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <span>[<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, RFC-XXXX</td>
-              <td class="text-left" rowspan="1" colspan="1">Yes</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">HopMAC128</td>
-              <td class="text-left" rowspan="1" colspan="1">-nnn</td>
-              <td class="text-left" rowspan="1" colspan="1">HopMAC based on KT128 XOF</td>
+              <td class="text-left" rowspan="1" colspan="1">TurboSHAKE128-MAC</td>
+              <td class="text-left" rowspan="1" colspan="1">-tbd</td>
+              <td class="text-left" rowspan="1" colspan="1">TurboSHAKE128 MAC</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <span>[<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, RFC-XXXX</td>
-              <td class="text-left" rowspan="1" colspan="1">Yes</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">xxxTurboSHAKE256</td>
-              <td class="text-left" rowspan="1" colspan="1">-nnn</td>
-              <td class="text-left" rowspan="1" colspan="1">TurboSHAKE256 XOF</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, RFC-XXXX</td>
-              <td class="text-left" rowspan="1" colspan="1">Yes</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">xxxTurboSHAKE128</td>
-              <td class="text-left" rowspan="1" colspan="1">-nnn</td>
-              <td class="text-left" rowspan="1" colspan="1">TurboSHAKE128 XOF</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, RFC-XXXX</td>
-              <td class="text-left" rowspan="1" colspan="1">Yes</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">cSHAKE128</td>
-              <td class="text-left" rowspan="1" colspan="1">-nnn</td>
-              <td class="text-left" rowspan="1" colspan="1">cSHAKE128</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#NIST.SP.800-185" class="cite xref">NIST.SP.800-185</a>]</span>, RFC-XXXX</td>
-              <td class="text-left" rowspan="1" colspan="1">Yes</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">cSHAKE256</td>
-              <td class="text-left" rowspan="1" colspan="1">-nnn</td>
-              <td class="text-left" rowspan="1" colspan="1">cSHAKE256</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#NIST.SP.800-185" class="cite xref">NIST.SP.800-185</a>]</span>, RFC-XXXX</td>
-              <td class="text-left" rowspan="1" colspan="1">Yes</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">KMAC128</td>
-              <td class="text-left" rowspan="1" colspan="1">-nnn</td>
+              <td class="text-left" rowspan="1" colspan="1">-tbd</td>
               <td class="text-left" rowspan="1" colspan="1">KMAC128</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <span>[<a href="#NIST.SP.800-185" class="cite xref">NIST.SP.800-185</a>]</span>, RFC-XXXX</td>
-              <td class="text-left" rowspan="1" colspan="1">Yes</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">KMAC256</td>
-              <td class="text-left" rowspan="1" colspan="1">-nnn</td>
+              <td class="text-left" rowspan="1" colspan="1">-tbd</td>
               <td class="text-left" rowspan="1" colspan="1">KMAC256</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <span>[<a href="#NIST.SP.800-185" class="cite xref">NIST.SP.800-185</a>]</span>, RFC-XXXX</td>
-              <td class="text-left" rowspan="1" colspan="1">Yes</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">KMACXOF128</td>
-              <td class="text-left" rowspan="1" colspan="1">-nnn</td>
-              <td class="text-left" rowspan="1" colspan="1">KMACXOF128</td>
+              <td class="text-left" rowspan="1" colspan="1">KT128-MAC</td>
+              <td class="text-left" rowspan="1" colspan="1">-tbd</td>
+              <td class="text-left" rowspan="1" colspan="1">KT128 MAC</td>
               <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#NIST.SP.800-185" class="cite xref">NIST.SP.800-185</a>]</span>, RFC-XXXX</td>
-              <td class="text-left" rowspan="1" colspan="1">Yes</td>
+                <span>[<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, RFC-XXXX</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">KMACXOF256</td>
-              <td class="text-left" rowspan="1" colspan="1">-nnn</td>
-              <td class="text-left" rowspan="1" colspan="1">KMACXOF256</td>
+              <td class="text-left" rowspan="1" colspan="1">KT256-MAC</td>
+              <td class="text-left" rowspan="1" colspan="1">-tbd</td>
+              <td class="text-left" rowspan="1" colspan="1">KT256 MAC</td>
               <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#NIST.SP.800-185" class="cite xref">NIST.SP.800-185</a>]</span>, RFC-XXXX</td>
-              <td class="text-left" rowspan="1" colspan="1">Yes</td>
+                <span>[<a href="#RFC9861" class="cite xref">RFC9861</a>]</span>, RFC-XXXX</td>
             </tr>
           </tbody>
         </table>
@@ -1469,16 +1473,17 @@ have been elided:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-6">
+<section id="section-5">
       <h2 id="name-security-considerations">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
-    </h2>
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-5-1">TBD<a href="#section-5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-normative-references">
-<section id="section-7">
+<section id="section-6">
       <h2 id="name-normative-references">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
 <dl class="references">
 <dt id="IANA.cose">[IANA.cose]</dt>

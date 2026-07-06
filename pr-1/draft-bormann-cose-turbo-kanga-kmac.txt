@@ -225,13 +225,14 @@ Table of Contents
    +---------------+-------+-------------------+
 
      Table 1: Registrations in COSE Algorithms
-            Updated to Recommended: Yes
+        Registry Updated to Recommended: Yes
 
 4.2.  Additions to Existing Registries
 
-   IANA is requested to update [has updated] the registrations in the
-   COSE Algorithms registry in [IANA.cose] shown in Table 1 by setting
-   the Recommended status column to Yes.
+   IANA is requested to add [has added] the registrations in the COSE
+   Algorithms registry in [IANA.cose] shown in Table 2.
+   // RFC Editor: Actual values are TBD by IANA and need to be updated
+   after registration.
 
    In Table 2, the following columns all have the same content and have
    been elided:
@@ -240,29 +241,31 @@ Table of Contents
 
    *  Change Controller: IETF
 
-   +=================+=====+=============+==================+===========+
-   |Name             |Value|Description  |Reference         |Recommended|
-   +=================+=====+=============+==================+===========+
-   |TurboSHAKE256-MAC|-nnn |TurboSHAKE256|[RFC9861], RFC-   |Yes        |
-   |                 |     |MAC          |XXXX              |           |
-   +-----------------+-----+-------------+------------------+-----------+
-   |TurboSHAKE128-MAC|-nnn |TurboSHAKE128|[RFC9861], RFC-   |Yes        |
-   |                 |     |MAC          |XXXX              |           |
-   +-----------------+-----+-------------+------------------+-----------+
-   |KMAC128          |-nnn |KMAC128      |[NIST.SP.800-185],|Yes        |
-   |                 |     |             |RFC-XXXX          |           |
-   +-----------------+-----+-------------+------------------+-----------+
-   |KMAC256          |-nnn |KMAC256      |[NIST.SP.800-185],|Yes        |
-   |                 |     |             |RFC-XXXX          |           |
-   +-----------------+-----+-------------+------------------+-----------+
-   |KT128-MAC        |-nnn |KT128 MAC    |[RFC9861], RFC-   |Yes        |
-   |                 |     |             |XXXX              |           |
-   +-----------------+-----+-------------+------------------+-----------+
-   |KT256-MAC        |-nnn |KT256 MAC    |[RFC9861], RFC-   |Yes        |
-   |                 |     |             |XXXX              |           |
-   +-----------------+-----+-------------+------------------+-----------+
+   *  Recommended: Yes
 
-              Table 2: Registrations Added to COSE Algorithms
+   +===================+=======+===============+====================+
+   | Name              | Value | Description   | Reference          |
+   +===================+=======+===============+====================+
+   | TurboSHAKE256-MAC | -tbd  | TurboSHAKE256 | [RFC9861], RFC-    |
+   |                   |       | MAC           | XXXX               |
+   +-------------------+-------+---------------+--------------------+
+   | TurboSHAKE128-MAC | -tbd  | TurboSHAKE128 | [RFC9861], RFC-    |
+   |                   |       | MAC           | XXXX               |
+   +-------------------+-------+---------------+--------------------+
+   | KMAC128           | -tbd  | KMAC128       | [NIST.SP.800-185], |
+   |                   |       |               | RFC-XXXX           |
+   +-------------------+-------+---------------+--------------------+
+   | KMAC256           | -tbd  | KMAC256       | [NIST.SP.800-185], |
+   |                   |       |               | RFC-XXXX           |
+   +-------------------+-------+---------------+--------------------+
+   | KT128-MAC         | -tbd  | KT128 MAC     | [RFC9861], RFC-    |
+   |                   |       |               | XXXX               |
+   +-------------------+-------+---------------+--------------------+
+   | KT256-MAC         | -tbd  | KT256 MAC     | [RFC9861], RFC-    |
+   |                   |       |               | XXXX               |
+   +-------------------+-------+---------------+--------------------+
+
+        Table 2: Registrations Added to COSE Algorithms Registry
 
 5.  Security Considerations
 

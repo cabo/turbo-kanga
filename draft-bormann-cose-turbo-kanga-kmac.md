@@ -72,6 +72,8 @@ And, this document provides "Recommended" status for those algorithms for COSE.
     RFC-XXXX with the RFC number of this specification and remove this
     note.
 
+[^rfced]: RFC Editor:
+
 --- middle
 
 # Introduction
@@ -152,31 +154,31 @@ have been elided:
 | KT128         |  -263 | KT128 XOF         |
 | TurboSHAKE256 |  -262 | TurboSHAKE256 XOF |
 | TurboSHAKE128 |  -261 | TurboSHAKE128 XOF |
-{: #tab-upgrade align="left" title="Registrations in COSE Algorithms Updated to Recommended: Yes"}
+{: #tab-upgrade align="left" title="Registrations in COSE Algorithms Registry Updated to Recommended: Yes"}
 
 ## Additions to Existing Registries {#sec-regadd}
 
 
-IANA is requested to update \[has updated] the registrations in the
-COSE Algorithms registry in [IANA.cose] shown in {{tab-upgrade}} by
-setting the Recommended status column to Yes.
+IANA is requested to add \[has added] the registrations in the
+COSE Algorithms registry in [IANA.cose] shown in {{tab-add}}.
+[^rfced] Actual values are TBD by IANA and need to be updated after registration.
 
 In {{tab-add}}, the following columns all have the same content and
 have been elided:
 
 * Capabilities: `[kty]`
 * Change Controller: IETF
+* Recommended: Yes
 
-
-| Name              | Value | Description               | Reference                     | Recommended |
-|------------------ |-------|---------------------------|-------------------------------|-------------|
-| TurboSHAKE256-MAC | -nnn  | TurboSHAKE256 MAC         | {{RFC9861}}, RFC-XXXX         | Yes         |
-| TurboSHAKE128-MAC | -nnn  | TurboSHAKE128 MAC         | {{RFC9861}}, RFC-XXXX         | Yes         |
-| KMAC128           | -nnn  | KMAC128                   | {{NIST.SP.800-185}}, RFC-XXXX | Yes         |
-| KMAC256           | -nnn  | KMAC256                   | {{NIST.SP.800-185}}, RFC-XXXX | Yes         |
-| KT128-MAC         | -nnn  | KT128 MAC                 |  {{RFC9861}}, RFC-XXXX        | Yes         |
-| KT256-MAC         | -nnn  | KT256 MAC                 |  {{RFC9861}}, RFC-XXXX        | Yes         |
-{: #tab-add align="left" title="Registrations Added to COSE Algorithms"}
+| Name              | Value | Description       | Reference                     |
+|-------------------+-------+-------------------+-------------------------------|
+| TurboSHAKE256-MAC | -tbd  | TurboSHAKE256 MAC | {{RFC9861}}, RFC-XXXX         |
+| TurboSHAKE128-MAC | -tbd  | TurboSHAKE128 MAC | {{RFC9861}}, RFC-XXXX         |
+| KMAC128           | -tbd  | KMAC128           | {{NIST.SP.800-185}}, RFC-XXXX |
+| KMAC256           | -tbd  | KMAC256           | {{NIST.SP.800-185}}, RFC-XXXX |
+| KT128-MAC         | -tbd  | KT128 MAC         | {{RFC9861}}, RFC-XXXX         |
+| KT256-MAC         | -tbd  | KT256 MAC         | {{RFC9861}}, RFC-XXXX         |
+{: #tab-add align="left" title="Registrations Added to COSE Algorithms Registry"}
 
 # Security Considerations
 

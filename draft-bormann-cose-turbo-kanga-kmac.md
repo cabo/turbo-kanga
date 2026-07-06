@@ -86,6 +86,7 @@ In addition, this document also specifies concrete instances of KMAC128 and KMAC
 
 <!-- Some examples in this specification are truncated using "..." for readability. -->
 
+[^question]: Question for the group:
 
 # MAC Algorithms Based on TurboSHAKE128, TurboSHAKE256, KT128, and KT256 for COSE
 
@@ -94,28 +95,28 @@ In addition, this document also specifies concrete instances of KMAC128 and KMAC
 ## TurboSHAKE128-MAC
 As specified in {{RFC9861, Section 2}}, TurboSHAKE128 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter D. 
 TurboSHAKE128-MAC is a MAC using TurboSHAKE128 where M is the concatenation of the original input message, called M', and a 128-bit secret key, called K, denoted as M'|| K. 
-Question for the group: Does the group want to have a D value ? If the answer is yes, what would it be ?
-Question for the group: L being 16 bytes (128 bits) is fine ?
+[^question] Does the group want to have a D value? If the answer is yes, what would it be?
+[^question] L being 16 bytes (128 bits) is fine?
 
 ## TurboSHAKE256-MAC
 As specified in {{RFC9861, Section 2}}, TurboSHAKE256 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter D. 
 TurboSHAKE256-MAC is a MAC using TurboSHAKE256 where M is the concatenation of the original input message, called M', and a 256-bit secret key, called K, denoted as M'|| K. 
-Question for the group: Does the group want to have a D value ? If the answer is yes, what would it be ?
-Question for the group: L being 16 bytes (256 bits) is fine ?
+[^question] Does the group want to have a D value? If the answer is yes, what would it be?
+[^question] L being 32 bytes (256 bits) is fine?
 
 ## KT128-MAC
 As specified in {{RFC9861, Section 3}}, KT128 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter C. 
 KT128-MAC is a MAC using KT128 where M is the concatenation of the original input message, called M', and a 128-bit secret key, called K, denoted as M'|| K. 
-Question for the group: Does the group want to have a C value ? If the answer is yes, what would it be ?
-Question for the group: L being 16 bytes (128 bits) is fine ?
+[^question] Does the group want to have a C value? If the answer is yes, what would it be?
+[^question] L being 16 bytes (128 bits) is fine?
 
 KT128 was designed to utilize parallelism in SIMD processors. 
 
 ## KT256-MAC
 As specified in {{RFC9861, Section 3}}, KT256 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter C. 
 KT256-MAC is a MAC using KT256 where M is the concatenation of the original input message, called M', and a 256-bit secret key, called K, denoted as M'|| K. 
-Question for the group: Does the group want to have a C value ? If the answer is yes, what would it be ?
-Question for the group: L being 16 bytes (256 bits) is fine ?
+[^question] Does the group want to have a C value? If the answer is yes, what would it be?
+[^question] L being 32 bytes (256 bits) is fine?
 
 KT128 was designed to utilize parallelism in SIMD processors. 
 
@@ -124,7 +125,7 @@ KT128 was designed to utilize parallelism in SIMD processors.
 {{NIST.SP.800-185}} specifies two MAC algorithms: KMAC128 and KMAC256 which have 3 required input parameters and an optional customization string input, called S.  
 The key, K, shall be 128 and 256 bits for KMAC128 and KMAC256 respectively. 
 
-Question for the group: Does the group want to have S to be an empty string ? Or, is there a specific string the group would like to use ? 
+[^question] Does the group want to have S to be an empty string? Or, is there a specific string the group would like to use? 
 
 # IANA Considerations
 

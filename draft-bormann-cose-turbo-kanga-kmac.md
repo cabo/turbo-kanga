@@ -52,7 +52,7 @@ informative:
 
 ...
 
-# Abstract
+--- abstract
 
 RFC 9861 defined and registered four eXtendable-Output Functions
 (XOFs), hash functions with output of arbitrary length, named
@@ -71,6 +71,8 @@ And, this document provides "Recommmended" status for those algorithms for COSE.
 [^replace-xxxx]: RFC Ed.: throughout this section, please replace
     RFC-XXXX with the RFC number of this specification and remove this
     note.
+
+--- middle
 
 # Introduction
 

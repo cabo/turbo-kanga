@@ -76,7 +76,7 @@ And, this document provides "Recommended" status for those algorithms for COSE.
 
 # Introduction
 
-TurboSHAKE128, TurboSHAKE256, KT128, and KT256 specified in RFC 9861 have great performance improvement over Keccak-based functions specified in FIPS 202 and SP 800-185. This document specifies concrete instances of those four functions for being used as MACs in COSE and moves their status to "Recommended". 
+TurboSHAKE128, TurboSHAKE256, KT128, and KT256 specified in {{RFC9861}} have great performance improvement over Keccak-based functions specified in FIPS 202 and SP 800-185. This document specifies concrete instances of those four functions for being used as MACs in COSE and moves their status to "Recommended". 
 
 In addition, this document also specifies concrete instances of KMAC128 and KMAC256 specified in SP 800-185 for being used as MACs in COSE and registers code points for them.  
 
@@ -90,20 +90,21 @@ In addition, this document also specifies concrete instances of KMAC128 and KMAC
 # MAC Algorithms Based on TurboSHAKE128, TurboSHAKE256, KT128, and KT256 for COSE
 
 (Add specifications for the HopMACs and for a simple KT based MAC.)
+
 ## TurboSHAKE128-MAC
-As specified in RFC9861, Section 2, TurboSHAKE128 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter D. 
+As specified in {{RFC9861, Section 2}}, TurboSHAKE128 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter D. 
 TurboSHAKE128-MAC is a MAC using TurboSHAKE128 where M is the concatenation of the original input message, called M', and a 128-bit secret key, called K, denoted as M'|| K. 
 Question for the group: Does the group want to have a D value ? If the answer is yes, what would it be ?
 Question for the group: L being 16 bytes (128 bits) is fine ?
 
 ## TurboSHAKE256-MAC
-As specified in RFC9861, Section 2, TurboSHAKE256 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter D. 
+As specified in {{RFC9861, Section 2}}, TurboSHAKE256 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter D. 
 TurboSHAKE256-MAC is a MAC using TurboSHAKE256 where M is the concatenation of the original input message, called M', and a 256-bit secret key, called K, denoted as M'|| K. 
 Question for the group: Does the group want to have a D value ? If the answer is yes, what would it be ?
 Question for the group: L being 16 bytes (256 bits) is fine ?
 
 ## KT128-MAC
-As specified in RFC9861, Section 3, KT128 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter C. 
+As specified in {{RFC9861, Section 3}}, KT128 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter C. 
 KT128-MAC is a MAC using KT128 where M is the concatenation of the original input message, called M', and a 128-bit secret key, called K, denoted as M'|| K. 
 Question for the group: Does the group want to have a C value ? If the answer is yes, what would it be ?
 Question for the group: L being 16 bytes (128 bits) is fine ?
@@ -111,7 +112,7 @@ Question for the group: L being 16 bytes (128 bits) is fine ?
 KT128 was designed to utilize parallelism in SIMD processors. 
 
 ## KT256-MAC
-As specified in RFC9861, Section 3, KT256 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter C. 
+As specified in {{RFC9861, Section 3}}, KT256 has 2 required input parameters: the message M and the output length in bytes L, and one optional input parameter C. 
 KT256-MAC is a MAC using KT256 where M is the concatenation of the original input message, called M', and a 256-bit secret key, called K, denoted as M'|| K. 
 Question for the group: Does the group want to have a C value ? If the answer is yes, what would it be ?
 Question for the group: L being 16 bytes (256 bits) is fine ?

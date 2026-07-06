@@ -130,7 +130,7 @@ Table of Contents
 
 2.1.  TurboSHAKE128-MAC
 
-   As specified in [RFC9861], Section 2, TurboSHAKE128 has 2 required
+   As specified in Section 2 of [RFC9861], TurboSHAKE128 has 2 required
    input parameters: the message M and the output length in bytes L, and
    one optional input parameter D.  TurboSHAKE128-MAC is a MAC using
    TurboSHAKE128 where M is the concatenation of the original input
@@ -142,7 +142,7 @@ Table of Contents
 
 2.2.  TurboSHAKE256-MAC
 
-   As specified in [RFC9861], Section 2, TurboSHAKE256 has 2 required
+   As specified in Section 2 of [RFC9861], TurboSHAKE256 has 2 required
    input parameters: the message M and the output length in bytes L, and
    one optional input parameter D.  TurboSHAKE256-MAC is a MAC using
    TurboSHAKE256 where M is the concatenation of the original input
@@ -154,7 +154,7 @@ Table of Contents
 
 2.3.  KT128-MAC
 
-   As specified in [RFC9861], Section 3, KT128 has 2 required input
+   As specified in Section 3 of [RFC9861], KT128 has 2 required input
    parameters: the message M and the output length in bytes L, and one
    optional input parameter C.  KT128-MAC is a MAC using KT128 where M
    is the concatenation of the original input message, called M', and a
@@ -167,7 +167,7 @@ Table of Contents
 
 2.4.  KT256-MAC
 
-   As specified in [RFC9861], Section 3, KT256 has 2 required input
+   As specified in Section 3 of [RFC9861], KT256 has 2 required input
    parameters: the message M and the output length in bytes L, and one
    optional input parameter C.  KT256-MAC is a MAC using KT256 where M
    is the concatenation of the original input message, called M', and a
@@ -270,6 +270,8 @@ Table of Contents
         Table 2: Registrations Added to COSE Algorithms Registry
 
 5.  Security Considerations
+
+   TBD
 
 6.  Normative References
 
